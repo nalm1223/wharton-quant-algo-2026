@@ -7,7 +7,7 @@ from portfolio_data import dict_data
 
 # initial criteria/constants
 year0_investment = 300_000
-year0_investment = 150_000
+year1_investment = 150_000
 operating_reserve = 50_000
 
 trade_days = 252
@@ -39,7 +39,7 @@ weighted_return, weighted_std = get_weighted_return_and_std(dict_data, last_pric
 
 # monte carlo w/ initial investment
 
-sim_count = 100
+sim_count = 50_000
 sim_years = 16
 dt = 1 / trade_days
 
