@@ -12,7 +12,7 @@ import os
 # extract ticker data from csv file
 
 stocktrak_data = pd.read_csv(
-    "/home/nick-mills/Documents/Investment Competition 2026-2027/open-positions-10_17_2026.csv", 
+    "/home/nick-mills/Documents/Investment Competition 2026-2027/open-positions-10_21_2026.csv", 
     usecols=['Symbol', 'Quantity']
 )
 
