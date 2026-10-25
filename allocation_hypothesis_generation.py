@@ -9,3 +9,14 @@
     -machine learning through gradient descent (modelling target return to coefficients and adjusting allocations to fit target)
 
 """
+import yfinance as yf
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+from portfolio_data import Portfolio
+from monte_carlo import Monte_Carlo
+from constants import *
+
+def generate_allocation_possibilities(portfolio, amount):
+    pass
