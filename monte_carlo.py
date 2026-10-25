@@ -4,13 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from portfolio_data import dict_data
-
-# initial criteria/constants
-YEAR0_INVESTMENT = 300_000
-YEAR1_INVESTMENT = 150_000
-OPERATING_RESERVE = 50_000
-
-TRADE_DAYS = 252
+from constants import *
 
 # monte carlo class
 
