@@ -1,0 +1,5 @@
+Symbol,Description,Quantity,Currency,LastPrice,PricePaid,DayChange,ProfitLoss,MarketValue,ProfitLossPercentage
+SCHD,Schwab Strategic Trust - Schwab US Dividend Equity ETF,909,USD,34.66,33.03,-0.03,"1,481.67",31505.94,4.93
+SMH,VanEck ETF Trust - VanEck Semiconductor ETF,25,USD,556.7,549.78,10.34,173.00,13917.5,1.26
+VPU,"Vanguard Group, Inc. - Vanguard Utilities ETF",90,USD,181.77,177.38,0.73,395.10,16359.3,2.47
+VTV,"Vanguard Group, Inc. - Vanguard Value ETF",100,USD,224.94,224.53,0.43,41.00,22494,0.18

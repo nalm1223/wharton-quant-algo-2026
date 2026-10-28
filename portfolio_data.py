@@ -1,4 +1,3 @@
-# use yfinance for historical data, massive of real-time
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -6,20 +5,20 @@ import numpy as np
 from constants import *
 
 class Portfolio():
-    def __init__(self, portfolio_data: dict[str, int] = {}):
-        self.porfolio_data = portfolio_data
+    def __init__(self, stocktrax_data: dict[str, int] = None):
+        self.stocktrax_data = stocktrax_data
 
         # if no data is provided, fetch and format it from StockTrak
-        if not portfolio_data:
+        if stocktrax_data is None:
             self.make_dictionary_data()
-            
+
         self.make_data()
 
     def make_dictionary_data(self):
         
         # extract ticker data from csv file
         stocktrak_data = pd.read_csv(
-            "/home/nick-mills/Documents/Investment Competition 2026-2027/open-positions-10_21_2026.csv", 
+            "Investment Competition 2026-2027/OpenPosition_10_27_2026.csv", 
             usecols=['Symbol', 'Quantity', 'LastPrice']
         )
 
@@ -46,23 +45,26 @@ class Portfolio():
             dict_data[i]['Annualized STD'] = annualized_daily_std_pct
             dict_data[i]['Annualized Return'] = annualized_return
 
-        self.portfolio_data = dict_data
+        self.stocktrax_data = dict_data
 
     def make_ticker_list(self):
-            self.tickers = [yf.Ticker(stock.get('Symbol')) for stock in self.portfolio_data]
+            self.tickers = [yf.Ticker(stock.get('Symbol')) for stock in self.stocktrax_data]
 
     def make_open_pos_total(self):
         self.open_total = round(
-            np.sum([self.portfolio_data[i].get('LastPrice') * self.portfolio_data[i].get("Quantity") 
-            for i in range(len(self.portfolio_data))]), 2
+            np.sum([self.stocktrax_data[i].get('LastPrice') * self.stocktrax_data[i].get("Quantity") 
+            for i in range(len(self.stocktrax_data))]), 2
         )
 
     def make_weighted_return_and_std(self):
-        weights = [self.portfolio_data[i].get('LastPrice') * self.portfolio_data[i].get("Quantity") / self.open_total for i in range(len(self.portfolio_data))]
-        returns = [stock.get('Annualized Return') for stock in self.portfolio_data]
+        self.weights = np.array([
+            self.stocktrax_data[i].get('LastPrice') * self.stocktrax_data[i].get("Quantity") / self.open_total 
+            for i in range(len(self.stocktrax_data))
+        ])
+        returns = [stock.get('Annualized Return') for stock in self.stocktrax_data]
 
-        self.weighted_return =  np.average(returns, weights=weights)
-        self.weighted_std = np.sqrt(np.average((returns - self.weighted_return) ** 2, weights=weights))
+        self.weighted_return =  np.average(returns, weights=self.weights)
+        self.weighted_std = np.sqrt(np.average((returns - self.weighted_return) ** 2, weights=self.weights))
     
     def make_data(self):
 
@@ -70,5 +72,16 @@ class Portfolio():
         self.make_open_pos_total()
         self.make_weighted_return_and_std()
 
-current_portfolio = Portfolio()
-print(current_portfolio.portfolio_data)
+    def order_by_last_price(self) -> list[dict]:
+        ordered_stocks = self.stocktrax_data
+
+        for i in range(1, len(self.stocktrax_data)):
+            key = ordered_stocks[i].get('LastPrice')
+            j = i - 1
+
+            while j >= 0 and ordered_stocks[j].get('LastPrice') > key:
+                ordered_stocks[j + 1]['LastPrice'] = ordered_stocks[j]['LastPrice']
+                j -= 1
+
+            ordered_stocks[j + 1]['LastPrice'] = key
+        return ordered_stocks
