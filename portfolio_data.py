@@ -5,19 +5,6 @@ import numpy as np
 from enum import Enum
 from constants import *
 
-class TimePeriods(Enum):
-    ONEDAY = "1d"
-    FIVEDAY = "5d"
-    ONEMONTH = "1mo"
-    THREEMONTH = "3mo"
-    SIXMONTH = "6mo"
-    ONEYEAR = "1y"
-    TWOYEAR = "2y"
-    FIVEYEAR = "5y" 
-    TENYEAR = "10y"
-    YEARTODATE = "ytd"
-    MAX = "max"
-
 class Portfolio():
     def __init__(self, stocktrax_data: dict[str, int] = None):
         self.stocktrax_data = stocktrax_data
@@ -82,8 +69,8 @@ class Portfolio():
             for stock in self.stocktrax_data
         ])
 
-        returns = [stock.get('Annualized Return') for stock in self.stocktrax_data]
-        self.weighted_return =  np.average(returns, weights=self.weights)
+        self.annualized_returns = [stock.get('Annualized Return') for stock in self.stocktrax_data]
+        self.weighted_return =  np.average(self.annualized_returns, weights=self.weights)
     
     def make_returns_matrix_size(self, data) -> tuple:
         daily_return_sizes = np.array([
@@ -95,11 +82,9 @@ class Portfolio():
         ])
         return (len(data), np.min(daily_return_sizes)-1)
 
-
     def make_portfolio_risk(self):
-        covariance_matrix = np.cov(self.return_matrix) * 252
-        self.std = np.sqrt(np.dot(self.weights.T, np.dot(covariance_matrix, self.weights)))
-        print(self.std)
+        self.covariance_matrix = np.cov(self.return_matrix) * 252
+        self.std = np.sqrt(np.dot(self.weights.T, np.dot(self.covariance_matrix, self.weights)))
 
     def make_data(self):
 

@@ -15,10 +15,7 @@ competition_portfolio = Portfolio()
 initial_monte_carlo = Monte_Carlo(portfolio=competition_portfolio, start_date=start_date, sim_years=16, sim_count=10_000)
 
 initial_monte_carlo.make_simulation_prices()
-initial_monte_carlo.plot_simulations()
+initial_monte_carlo.make_ticker_simulation_prices(ticker_index=0)
 
-# get_youngest_IPO
-
-# stocks = ["SMH", "SCHD"]
-# daily_return_sizes = np.array([yf.Ticker(stock).history(period="max")['Close'].shape[0] for stock in stocks])
-# print(np.min(daily_return_sizes))
+initial_monte_carlo.plot_p_simulations()
+initial_monte_carlo.plot_t_simulations()
