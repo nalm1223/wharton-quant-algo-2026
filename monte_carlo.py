@@ -23,7 +23,7 @@ class Monte_Carlo(Portfolio):
         
         dist_size = (self.sim_count, days_to_predict)
     
-        simulations_normal = np.random.normal(loc=(1 + self.portfolio.weighted_return) ** dt, scale=self.portfolio.weighted_std * np.sqrt(dt), size=dist_size)
+        simulations_normal = np.random.normal(loc=(1 + self.portfolio.weighted_return) ** dt, scale=self.portfolio.std * np.sqrt(dt), size=dist_size)
     
         simulations_normal = np.concat(
             (np.ones((self.sim_count, 1)), simulations_normal),

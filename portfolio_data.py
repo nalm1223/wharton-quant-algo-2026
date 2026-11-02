@@ -2,12 +2,26 @@ import yfinance as yf
 import pandas as pd
 import numpy as np
 
+from enum import Enum
 from constants import *
+
+class TimePeriods(Enum):
+    ONEDAY = "1d"
+    FIVEDAY = "5d"
+    ONEMONTH = "1mo"
+    THREEMONTH = "3mo"
+    SIXMONTH = "6mo"
+    ONEYEAR = "1y"
+    TWOYEAR = "2y"
+    FIVEYEAR = "5y" 
+    TENYEAR = "10y"
+    YEARTODATE = "ytd"
+    MAX = "max"
 
 class Portfolio():
     def __init__(self, stocktrax_data: dict[str, int] = None):
         self.stocktrax_data = stocktrax_data
-
+  
         # if no data is provided, fetch and format it from StockTrak
         if stocktrax_data is None:
             self.make_dictionary_data()
@@ -15,7 +29,7 @@ class Portfolio():
         self.make_data()
 
     def make_dictionary_data(self):
-        
+
         # extract ticker data from csv file
         stocktrak_data = pd.read_csv(
             "Investment Competition 2026-2027/OpenPosition_10_27_2026.csv", 
@@ -26,19 +40,25 @@ class Portfolio():
 
         dict_data = stocktrak_data.to_dict(orient="records")
 
+        return_matrix_size = self.make_returns_matrix_size(dict_data)
+        self.return_matrix = np.zeros(shape=return_matrix_size)
+
         for i in range(total_open_positions):
             
             current_stock_data = yf.Ticker(dict_data[i].get("Symbol")).history(period='max')
-
             # annualized return
 
             daily_returns = current_stock_data['Close'].pct_change()
+            daily_returns = daily_returns.iloc[-return_matrix_size[1]:].dropna()
+
+            self.return_matrix[i] = np.array(daily_returns)
+
             annualized_return = np.pow(
                 np.prod(daily_returns + 1),
                 TRADE_DAYS / daily_returns.shape[0]
             ) - 1
 
-            # standard deviation (change to more accurate std over stock's life)
+            # standard deviation 
 
             annualized_daily_std_pct = daily_returns.std() * np.sqrt(TRADE_DAYS)
 
@@ -47,8 +67,8 @@ class Portfolio():
 
         self.stocktrax_data = dict_data
 
-    def make_ticker_list(self):
-            self.tickers = [yf.Ticker(stock.get('Symbol')) for stock in self.stocktrax_data]
+    def make_ticker_name_list(self):
+            self.ticker_names = [stock.get('Symbol') for stock in self.stocktrax_data]
 
     def make_open_pos_total(self):
         self.open_total = round(
@@ -56,32 +76,60 @@ class Portfolio():
             for i in range(len(self.stocktrax_data))]), 2
         )
 
-    def make_weighted_return_and_std(self):
+    def make_weighted_return(self):
         self.weights = np.array([
-            self.stocktrax_data[i].get('LastPrice') * self.stocktrax_data[i].get("Quantity") / self.open_total 
-            for i in range(len(self.stocktrax_data))
+            stock['LastPrice'] * stock["Quantity"] / self.open_total 
+            for stock in self.stocktrax_data
         ])
-        returns = [stock.get('Annualized Return') for stock in self.stocktrax_data]
 
+        returns = [stock.get('Annualized Return') for stock in self.stocktrax_data]
         self.weighted_return =  np.average(returns, weights=self.weights)
-        self.weighted_std = np.sqrt(np.average((returns - self.weighted_return) ** 2, weights=self.weights))
     
+    def make_returns_matrix_size(self, data) -> tuple:
+        daily_return_sizes = np.array([
+                yf.Ticker(stock['Symbol'])
+                .history(period="max")['Close']
+                .dropna()
+                .shape[0] 
+                for stock in data
+        ])
+        return (len(data), np.min(daily_return_sizes)-1)
+
+
+    def make_portfolio_risk(self):
+        covariance_matrix = np.cov(self.return_matrix) * 252
+        self.std = np.sqrt(np.dot(self.weights.T, np.dot(covariance_matrix, self.weights)))
+        print(self.std)
+
     def make_data(self):
 
-        self.make_ticker_list()
+        self.make_ticker_name_list()
         self.make_open_pos_total()
-        self.make_weighted_return_and_std()
+        self.make_weighted_return()
+        self.make_portfolio_risk()
 
-    def order_by_last_price(self) -> list[dict]:
-        ordered_stocks = self.stocktrax_data
+    def __add__(self, other):
 
-        for i in range(1, len(self.stocktrax_data)):
-            key = ordered_stocks[i].get('LastPrice')
-            j = i - 1
+        # add quanitites of new data with old data
+        previous_portfolio = self.stocktrax_data
+        added_allocations = other.stocktrax_data
+        
+        new_portfolio = Portfolio(previous_portfolio)
 
-            while j >= 0 and ordered_stocks[j].get('LastPrice') > key:
-                ordered_stocks[j + 1]['LastPrice'] = ordered_stocks[j]['LastPrice']
-                j -= 1
+        for i in range(len(previous_portfolio)):
+            new_portfolio[i]['LastPrice'] = previous_portfolio[i]['LastPrice'] + added_allocations[i]['LastPrice']
 
-            ordered_stocks[j + 1]['LastPrice'] = key
-        return ordered_stocks
+        return new_portfolio
+
+    def __sub__(self, other):
+    
+            # subtract quanitites of new data with old data
+            previous_portfolio = self.stocktrax_data
+            added_allocations = other.stocktrax_data
+            
+            new_portfolio = Portfolio(previous_portfolio)
+    
+            for i in range(len(previous_portfolio)):
+                new_portfolio[i]['LastPrice'] = previous_portfolio[i]['LastPrice'] - added_allocations[i]['LastPrice']
+    
+            return new_portfolio
