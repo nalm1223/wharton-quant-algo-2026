@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 from portfolio_data import Portfolio
 from monte_carlo import Monte_Carlo
 from constants import *
+from typing import Literal
+
 
 # monte carlo w/ initial investment
 
@@ -14,8 +16,8 @@ competition_portfolio = Portfolio()
 
 initial_monte_carlo = Monte_Carlo(portfolio=competition_portfolio, start_date=start_date, sim_years=16, sim_count=10_000)
 
-initial_monte_carlo.make_simulation_prices()
-initial_monte_carlo.make_ticker_simulation_prices(ticker_index=0)
+initial_monte_carlo.make_p_simulation_prices()
+initial_monte_carlo.make_t_simulation_prices(ticker_index=0)
 
 initial_monte_carlo.plot_p_simulations()
 initial_monte_carlo.plot_t_simulations()

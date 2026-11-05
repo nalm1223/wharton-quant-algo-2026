@@ -1,6 +1,9 @@
+import pandas_market_calendars as pdmc
+
 YEAR0_INVESTMENT = 300_000
 YEAR1_INVESTMENT = 150_000
 OPERATING_RESERVE = 50_000
 
 TRADE_DAYS = 252
+NYSE_BUSINESS_DAYS = pdmc.get_calendar('NYSE')
 RISK_FREE_RETURN = 0.042

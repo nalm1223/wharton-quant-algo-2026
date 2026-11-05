@@ -1,0 +1,7 @@
+Symbol,Description,Quantity,Currency,LastPrice,PricePaid,DayChange,ProfitLoss,MarketValue,ProfitLossPercentage
+GLD,SPDR Gold Trust - SPDR Gold Shares ETF,40,USD,361.65,367.37,5.87,-228.80,14466,-1.56
+PG,Procter & Gamble Co.,90,USD,163.56,159.9,1.99,329.40,14720.4,2.29
+SCHD,Schwab Strategic Trust - Schwab US Dividend Equity ETF,909,USD,35.9,33.03,0.12,"2,608.83",32633.1,8.69
+SMH,VanEck ETF Trust - VanEck Semiconductor ETF,25,USD,508.31,549.78,-14.18,"-1,036.75",12707.75,-7.54
+VPU,"Vanguard Group, Inc. - Vanguard Utilities ETF",90,USD,188.64,177.38,1.06,"1,013.40",16977.6,6.35
+VTV,"Vanguard Group, Inc. - Vanguard Value ETF",100,USD,228.57,224.53,0.55,404.00,22857,1.80

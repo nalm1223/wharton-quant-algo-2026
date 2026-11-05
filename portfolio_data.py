@@ -6,7 +6,7 @@ from enum import Enum
 from constants import *
 
 class Portfolio():
-    def __init__(self, stocktrax_data: dict[str, int] = None):
+    def __init__(self, stocktrax_data: list[dict[str, int]] = None):
         self.stocktrax_data = stocktrax_data
   
         # if no data is provided, fetch and format it from StockTrak
@@ -19,7 +19,7 @@ class Portfolio():
 
         # extract ticker data from csv file
         stocktrak_data = pd.read_csv(
-            "Investment Competition 2026-2027/OpenPosition_10_27_2026.csv", 
+            "StockTrak Data 2026-2027/OpenPosition_11_2_2026.csv", 
             usecols=['Symbol', 'Quantity', 'LastPrice']
         )
 
@@ -93,6 +93,8 @@ class Portfolio():
         self.make_weighted_return()
         self.make_portfolio_risk()
 
+    def get_portfolio_size(self):
+        return len(self.stocktrax_data)
     def __add__(self, other):
 
         # add quanitites of new data with old data
