@@ -33,7 +33,7 @@ def negative_sharpe_ratio(weights, rfr=RISK_FREE_RETURN):
 constraints = {'type': 'eq', 'fun': lambda weights: np.sum(weights) - 1}
 
 ## This creates an array of (0, 0.5) for each stock
-bounds = [(0, 0.7) for _ in range(returns.shape[0])]
+bounds = [(0.05, 0.4) for _ in range(returns.shape[0])]
 
 optimized_results = optimize.minimize(
     fun=negative_sharpe_ratio, 
