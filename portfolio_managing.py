@@ -14,16 +14,16 @@ from monte_carlo import Monte_Carlo
 from constants import *
 from typing import Literal
 
-year_0_portfolio = Portfolio()
-weights_0 = year_0_portfolio.weights
-returns = year_0_portfolio.return_matrix
+year0_portfolio = Portfolio()
+weights_0 = year0_portfolio.weights
+returns = year0_portfolio.return_matrix
 
 def negative_sharpe_ratio(weights, rfr=RISK_FREE_RETURN):
 
     # after competition, improve make_weighted_return and make_portfolio_risk to be included here
 
     current_return = np.sum([weights[i] * returns[i].mean() for i in range(returns.shape[0])]) * TRADE_DAYS
-    current_risk = np.sqrt(np.dot(weights.T, np.dot(year_0_portfolio.covariance_matrix, weights)))
+    current_risk = np.sqrt(np.dot(weights.T, np.dot(year0_portfolio.covariance_matrix, weights)))
 
     return -(current_return - rfr) / current_risk
 
@@ -38,18 +38,16 @@ bounds = [(0, 0.7) for _ in range(returns.shape[0])]
 optimized_results = optimize.minimize(
     fun=negative_sharpe_ratio, 
     x0=weights_0, 
-    method='SLSQP', 
+    method='COBYLA', 
     constraints=constraints, 
     bounds=bounds
 )
 
 best_weights = optimized_results.x
 
-print(weights_0)
-print(best_weights)
-
-print(f'Initial Sharpe Ratio: {negative_sharpe_ratio(weights_0)}')
-print(f'Optimized Sharpe Ratio: {negative_sharpe_ratio(best_weights)}')
+print(f'Initial Weights: \n{weights_0}')
+print(f'Initial Return: {year0_portfolio.weighted_return}, Initial STD: {year0_portfolio.std}')
+print(f'Initial Sharpe Ratio: {negative_sharpe_ratio(weights_0)}\n')
 
 '''
 Important Years:
@@ -81,7 +79,6 @@ year_range = Literal[np.arange(0, 15)]
 
 def weights_to_allocation(current_portfolio: Portfolio, target_weights, allocation_amount=None, current_year = year_range, target_open_total=None, percentile=50):
     
-
     if(allocation_amount and target_open_total is None):
         raise ValueError('Either allocation amount or target open total needs to be provided')
     
@@ -94,7 +91,7 @@ def weights_to_allocation(current_portfolio: Portfolio, target_weights, allocati
         ticker_totals = target_weights * target_open_total
         
         for (i, stock) in enumerate(new_portfolio.stocktrax_data):
-            new_quantity = ticker_totals[i] // stock['LastPrice']
+            new_quantity = (ticker_totals[i] // stock['LastPrice']) * (ticker_totals[i] > stock['LastPrice'])
             stock['Quantity'] = int(new_quantity)
 
         # invest remaining money in stock with loewest sharpe ratio
@@ -102,8 +99,13 @@ def weights_to_allocation(current_portfolio: Portfolio, target_weights, allocati
         lowest_sharpe = np.min([stock['Annualized Return'] for stock in new_portfolio.stocktrax_data])
         return new_portfolio
 
-optimized_year0_portfolio = weights_to_allocation(year_0_portfolio, best_weights, target_open_total=YEAR0_INVESTMENT)
+optimized_year0_portfolio = weights_to_allocation(year0_portfolio, best_weights, target_open_total=YEAR0_INVESTMENT)
 optimized_year0_portfolio.make_data()
 
-print(optimized_year0_portfolio.weights)
+print(f'Optimized Weights: \n{optimized_year0_portfolio.weights}')
 print(f'Optimized Return: {optimized_year0_portfolio.weighted_return}, Optimized STD: {optimized_year0_portfolio.std}')
+print(f'Optimized Sharpe Ratio: {negative_sharpe_ratio(best_weights)}\n')
+
+print(f'{optimized_year0_portfolio.stocktrax_data}\n')
+print(YEAR0_INVESTMENT - optimized_year0_portfolio.open_total)
+

@@ -2,7 +2,6 @@ import yfinance as yf
 import pandas as pd
 import numpy as np
 
-from enum import Enum
 from constants import *
 
 class Portfolio():
@@ -19,7 +18,7 @@ class Portfolio():
 
         # extract ticker data from csv file
         stocktrak_data = pd.read_csv(
-            "StockTrak Data 2026-2027/OpenPosition_11_2_2026.csv", 
+            "StockTrak Data 2026-2027/OpenPosition_11_5_2026.csv", 
             usecols=['Symbol', 'Quantity', 'LastPrice']
         )
 
