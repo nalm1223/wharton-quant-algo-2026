@@ -23,9 +23,12 @@ The case study (Laura Gao) objectives include:
 Stock selection was dictated by fundamental research done by our team, so the algorithm would need to
 - Find the amount of money to put into each chosen stock to ensure a balance of risk and return for initial investments
 - Create a distribution for possible returns for the portfolio
-- Make the best allocations/deallocations that fit Laura's goals
+- Make the best allocations/de-allocations that fit Laura's goals
 
 ## Rationale
+What we found to be best for establishing this first criteria is a negative sharpe ratio optimization. This involved an initial investment into each stock relative to pseudo-risk-parity (stocks of similar fundamental statistics were bought in similar amounts, with higher risk investments having a lower proportion to lower risk). These investments would then be converted to an array of allocation weights, the total allocation of a single stock divided by the total allocation towards the entire portfolio.
+
+> This methodology is almost identical to that showcased in [this article](https://medium.com/@andrejin.nagano/portfolio-optimization-explained-python-code-d15cd017ff31), so much of the credit for *portfolio_managing.py* goes to Andre Nagano.
 
 ## Assumptions
 - Projected return outcomes will follow a normal distribution $\mathcal{N}(\mu,\sigma^2)$, where its mean ($\mu$) is equal to the portfolio's annualized return, and its variance ($\sigma^2$) is the standard deviation of the ticker or portfolio squared
@@ -61,9 +64,17 @@ From these optimized allocation weights, allocations to each ticker can be made,
 | VPU    | 80               |
 | VTV    | 67               |
 
+Additionally, the portfolio's future return distribution was able to be modeled over the course of 16 years with our initial investment of $300,000, with any additional allocations or de-allocations:
 
+<p align="center">
+  <img src="https://github.com/nalm1223/wharton-quant-algo-2026/blob/main/images/Portfolio_Price_Time_Graph_Without_Deallocation.png" alt="First image" width="48%" />
+  <img src="https://github.com/nalm1223/wharton-quant-algo-2026/blob/main/images/Portfolio_Frequency_Price_Distribution_Graph_Without_Deallocation.png" alt="Second image" width="48%" />
+</p>
+
+> The left figure showcases the portfolio's open position total with respect to time for each simulation, and the right figure indicates the frequency distribution of each price bar (100 total)
 
 ### Following Competition
+
 
 ## Further Research
 Through future projects, the usage of algorithmic trading 
