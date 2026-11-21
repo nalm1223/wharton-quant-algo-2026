@@ -1,13 +1,13 @@
 # Simple Quantitative Algorithm for Wharton Global Investment Competition
 
 ## Table Of Contents
-- [Initial Algorithm Objectives](#initial_algorithm_objectives)
+- [Initial Algorithm Objectives](#initial-algorithm-objectives)
 - [Rationale](#rationale)
 - [Assumptions](#assumptions)
 - [Results](#results)
-  - [Competition Outcomes](#competition_outcomes)
-  - [Following Competition](#following_competition)
-- [Further Research](#further_research)
+  - [Competition Outcomes](#competition-outcomes)
+  - [Following Competition](#following-competition)
+- [Further Research](#further-research)
 - [Sources](#sources)
 
 ## Initial Algorithm Objectives
