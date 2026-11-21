@@ -21,7 +21,7 @@ class Monte_Carlo():
 
         self.dt = 1 / TRADE_DAYS
 
-        self.date_range = NYSE_BUSINESS_DAYS.schedule(start_date=self.start_date, end_date=self.end_date)
+        self.date_range = pd.date_range(start=self.start_date, end=self.end_date, freq='B')
         self.dist_size = (self.sim_count, len(self.date_range) - 1)
 
     def make_p_simulation_prices(self):
