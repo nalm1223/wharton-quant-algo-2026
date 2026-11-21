@@ -1,4 +1,8 @@
 # Simple Quantitative Algorithm for Wharton Global Investment Competition
+[wharton logo]: https://github.com/nalm1223/wharton-quant-algo-2026/blob/main/images/wharton%20logo.avif
+[global competition logo]: https://github.com/nalm1223/wharton-quant-algo-2026/blob/main/images/global%20competition%20logo.avif
+
+![alt text][wharton logo]
 
 ## Table Of Contents
 - [Initial Algorithm Objectives](#initial-algorithm-objectives)
