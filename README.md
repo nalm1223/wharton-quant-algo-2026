@@ -28,6 +28,8 @@ Stock selection was dictated by fundamental research done by our team, so the al
 ## Rationale
 What we found to be best for establishing this first criteria is a negative sharpe ratio optimization. This involved an initial investment into each stock relative to pseudo-risk-parity (stocks of similar fundamental statistics were bought in similar amounts, with higher risk investments having a lower proportion to lower risk). These investments would then be converted to an array of allocation weights, the total allocation of a single stock divided by the total allocation towards the entire portfolio.
 
+
+
 > This methodology is almost identical to that showcased in [this article](https://medium.com/@andrejin.nagano/portfolio-optimization-explained-python-code-d15cd017ff31), so much of the credit for *portfolio_managing.py* goes to Andre Nagano.
 
 ## Assumptions
