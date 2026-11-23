@@ -7,7 +7,7 @@
 ## Table Of Contents
 - [Initial Algorithm Objectives](#initial-algorithm-objectives)
 - [Rationale](#rationale)
-  - [Mean-Variance Portfolio Optimization](mean-variance-portfolio-optimization)
+  - [Mean Variance Portfolio Optimization](mean-variance-portfolio-optimization)
   - [Monte Carlo](monte-carlo)
 - [Assumptions](#assumptions)
 - [Results](#results)
@@ -28,7 +28,7 @@ Stock selection was dictated by fundamental research done by our team, so the al
 - Make the best allocations/de-allocations that fit Laura's goals
 
 ## Rationale
-### Mean-Variance Portfolio Optimization
+### Mean Variance Portfolio Optimization
 What we found to be best for establishing this first criteria is a negative sharpe ratio optimization. This involved an initial investment into each stock relative to pseudo-risk-parity (stocks of similar fundamental statistics were bought in similar amounts, with higher risk investments having a lower proportion to lower risk). These investments would then be converted to an array of allocation weights, the total allocation of a single stock divided by the total allocation towards the entire portfolio.
 
 Then, each allocation weight is adjusted such that its sharpe ratio is maximized.
@@ -57,8 +57,7 @@ Using a COBYLA (Constrained Optimization BY Linear Approximation) minimization a
 > **This methodology is almost identical to that showcased in [this article](https://medium.com/@andrejin.nagano/portfolio-optimization-explained-python-code-d15cd017ff31), so much of the credit for *portfolio_managing.py* goes to Andre Nagano.**
 
 ### Monte Carlo
-
-Using the same $R_p$ and $\sigma_p$ values of the optimized portfolio, a Monte Carlo simulation can be modeled by a normal distribution with a mean of $R_p$ and a variance of $(\sigma_p)^2$.
+The second criteria is best approached with a Monte Carlo algorithm. Using the same $R_p$ and $\sigma_p$ values of the optimized portfolio, a Monte Carlo simulation can be modeled by a normal distribution with a mean of $R_p$ and a variance of $(\sigma_p)^2$.
 
 Provided a value of the number of simulations and the amount of years to project, a Monte Carlo will simulate a stochastic walk of the portfolio's value over time, with respect to this distribution, for each simulation. This data will create a new distribution curve that can be showcased with a frequency graph, where each bar's height is the number of times the projected value of the stock falls within a given range.
 
@@ -103,7 +102,9 @@ From these optimized allocation weights, allocations to each ticker can be made,
 | VPU    | 80               |
 | VTV    | 67               |
 
-Additionally, the portfolio's future return distribution was able to be modeled over the course of 16 years with our initial investment of $300,000, with any additional allocations or de-allocations:
+By increasing our annualized return by ~5% and our standard deviation by ~3%, our return was able to optimized without compromising our risk, improving our portfolio overall.
+
+Additionally, the portfolio's future return distribution was able to be modeled over the course of 16 years with our initial investment of $300,000, without any additional allocations or de-allocations:
 
 <p align="center">
   <img src="https://github.com/nalm1223/wharton-quant-algo-2026/blob/main/images/Portfolio_Price_Time_Graph_Without_Deallocation.png" alt="First image" width="48%" />
@@ -113,6 +114,7 @@ Additionally, the portfolio's future return distribution was able to be modeled 
 > The left figure showcases the portfolio's open position total with respect to time for each simulation, and the right figure indicates the frequency distribution of each price bar (100 total)
 
 ### Following Competition
+
 
 
 ## Further Research
