@@ -13,7 +13,6 @@
 - [Results](#results)
   - [Competition Outcomes](#competition-outcomes)
   - [Following Competition](#following-competition)
-- [Further Research](#further-research)
 - [Sources](#sources)
 
 ## Initial Algorithm Objectives
@@ -54,7 +53,7 @@ Our model function for our optimization then returns the negative sharpe ratio, 
 
 Using a COBYLA (Constrained Optimization BY Linear Approximation) minimization algorithm, the weights of each allocation can be fit such that the negative sharpe ratio of the portfolio is as low as possible, given the list of tickers (stocks) themselves.
 
-> **This methodology is almost identical to that showcased in [this article](https://medium.com/@andrejin.nagano/portfolio-optimization-explained-python-code-d15cd017ff31), so much of the credit for *portfolio_managing.py* goes to Andre Nagano.**
+> This methodology is almost identical to that showcased in [this article](https://medium.com/@andrejin.nagano/portfolio-optimization-explained-python-code-d15cd017ff31), so much of the credit for *portfolio_managing.py* goes to Andre Nagano.
 
 ### Monte Carlo
 The second criteria is best approached with a Monte Carlo algorithm. Using the same $R_p$ and $\sigma_p$ values of the optimized portfolio, a Monte Carlo simulation can be modeled by a normal distribution with a mean of $R_p$ and a variance of $(\sigma_p)^2$.
@@ -68,7 +67,7 @@ Provided a value of the number of simulations and the amount of years to project
 
   - This eliminates some of the tail-events of the market (scenarios of many standard deviations from the norm, market bubbles or crashes), which is viable due to the general low-volatility assets chosen by our team (ETFs, utilities, energy, etc.)
 
-- The standard deviation and annualized return for each ticker remains constant over the course of the account's position in the market, as over 10 years of historical data is utilized to find $R_p$ and $\sigma_p$ (2904 total historical trade days with current stocks)
+- The standard deviation and annualized return for each ticker remains constant over the course of the account's position in the market, as over 10 years of historical data is utilized to find $R_p$ and $\sigma_p$ (2904 total historical trade days accounted for with current stocks)
 
 - The total number of bars of the frequency distribution remains constant and was chosen to be 100 for any Monte Carlo, which has shown to be sufficient at illustrating the median simulation price and approximate deviation from this median.
 
@@ -115,9 +114,27 @@ Additionally, the portfolio's future return distribution was able to be modeled 
 
 ### Following Competition
 
+**The following section is a work in progress, with what is written here serving as a to-do list for what is to come in the following months**
 
+With a combination of this portfolio optimization and Monte Carlo simulation, additional allocations and de-allocations can be optimized to fit the needs of Laura, and thus an outline for the portfolio's life can be modeled with the following procedure:
 
-## Further Research
-Through future projects, the usage of algorithmic trading 
+- Find optimal initial allocation weights for the first $300,000
+- Simulate the portfolio's price change distribution over the course of 1 year with a Monte Carlo of 10,000 simulations, as well as separate Monte Carlo simulations for each ticker over the course of 16 years
+  - For these simulations and all of those that follow, choose a single final value from the distribution for future usage (based off of performance percentile)
+- Find optimal allocations for this change in portfolio value plus the additional $150,000 added to the account, accounting for changes in each ticker price
+  - Check that the optimized weights haven't changed from their initial optimization
+- Simulate next 5 years of portfolio price change
+- Find optimal de-allocation of $50,000 and simulate portfolio price change for each year over the course of 10 years
+- Track total value of open positions of portfolio at end of period
+
+To test the efficacy of this procedure, back-test this procedure against a different portfolio of the same value and a set of random stocks (chosen out of holdings of S&P 500)
+
+Finally, properly label and beautify graphs to better showcase findings.
 
 ## Sources
+1. [Python For Finance - GitHub](https://github.com/teobeeguan/Python-For-Finance)
+2. [Portfolio Optimization Explained + Python Code - Medium](https://medium.com/@andrejin.nagano/portfolio-optimization-explained-python-code-d15cd017ff31)
+3. [Monte Carlo Simulation for your portfolio: a practical guide - Wallible](https://www.wallible.com/en/blog/monte-carlo-simulation-portfolio-guide/)
+4. [Stock Analysis with Monte Carlo Simulation - GitHub](https://github.com/theanh97/Monte-Carlo-Simulation-for-Stock-Market)
+5. [Daniel Boctor YoutTube - GitHub](https://github.com/daniel-boctor/Daniel-Boctor-Youtube)
+6. [Portfolio Risk and Return - Kellogg](https://www.kellogg.northwestern.edu/faculty/hagerty/ftp/Emp_Investments/Lectures/PortfolioTheory_2_Jan_1_20081.pdf)
