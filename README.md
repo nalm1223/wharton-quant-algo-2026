@@ -7,8 +7,8 @@
 ## Table Of Contents
 - [Initial Algorithm Objectives](#initial-algorithm-objectives)
 - [Rationale](#rationale)
-  - [Mean Variance Portfolio Optimization](mean-variance-portfolio-optimization)
-  - [Monte Carlo](monte-carlo)
+  - [Mean Variance Portfolio Optimization](#mean-variance-portfolio-optimization)
+  - [Monte Carlo](#monte-carlo)
 - [Assumptions](#assumptions)
 - [Results](#results)
   - [Competition Outcomes](#competition-outcomes)
