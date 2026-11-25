@@ -10,7 +10,7 @@ from constants import *
 
 class Monte_Carlo():
 
-    def __init__(self, portfolio: Portfolio, sim_years: int, start_date: pd.Timestamp = '2027-01-01 00:00:00', end_date: pd.Timestamp = '2043-01-01 00:00:00', sim_count: int = 10_000) -> None:
+    def __init__(self, portfolio: Portfolio, sim_years: int = 16, start_date: pd.Timestamp = '2027-01-01 00:00:00', end_date: pd.Timestamp = '2043-01-01 00:00:00', sim_count: int = 10_000) -> None:
         
         self.portfolio = portfolio
         self.start_date = start_date
@@ -54,7 +54,7 @@ class Monte_Carlo():
         self.t_normal_prices = self.portfolio.stocktrax_data[ticker_index]['LastPrice'] * simulations_normal.cumprod(axis=1)
     
     def plot_p_simulations(self):
-
+    
         for i in range(self.sim_count):
             plt.plot(self.date_range, self.p_normal_prices[i], alpha = 0.05)
         plt.show()
