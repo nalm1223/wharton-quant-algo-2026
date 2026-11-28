@@ -12,7 +12,6 @@
 - [Assumptions](#assumptions)
 - [Results](#results)
   - [Competition Outcomes](#competition-outcomes)
-  - [Following Competition](#following-competition)
 - [Sources](#sources)
 
 ## Initial Algorithm Objectives
@@ -111,25 +110,6 @@ Additionally, the portfolio's future return distribution was able to be modeled 
 </p>
 
 > The left figure showcases the portfolio's open position total with respect to time for each simulation, and the right figure indicates the frequency distribution of each price bar (100 total)
-
-### Following Competition
-
-**The following section is a work in progress, with what is written here serving as a to-do list for what is to come in the following months**
-
-With a combination of this portfolio optimization and Monte Carlo simulation, additional allocations and de-allocations can be optimized to fit the needs of Laura, and thus an outline for the portfolio's life can be modeled with the following procedure:
-
-- Find optimal initial allocation weights for the first $300,000
-- Simulate the portfolio's price change distribution over the course of 1 year with a Monte Carlo of 10,000 simulations, as well as separate Monte Carlo simulations for each ticker over the course of 16 years
-  - For these simulations and all of those that follow, choose a single final value from the distribution for future usage (based off of performance percentile)
-- Find optimal allocations for this change in portfolio value plus the additional $150,000 added to the account, accounting for changes in each ticker price
-  - Check that the optimized weights haven't changed from their initial optimization
-- Simulate next 5 years of portfolio price change
-- Find optimal de-allocation of $50,000 and simulate portfolio price change for each year over the course of 10 years
-- Track total value of open positions of portfolio at end of period
-
-To test the efficacy of this procedure, back-test this procedure against a different portfolio of the same value and a set of random stocks (chosen out of holdings of S&P 500)
-
-Finally, properly label and beautify graphs to better showcase findings.
 
 ## Sources
 1. [Python For Finance - GitHub](https://github.com/teobeeguan/Python-For-Finance)
